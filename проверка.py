@@ -1,26 +1,25 @@
-def read_recipes(file_name):
-    cook_book = {}
-    with open(file_name, 'r', encoding='utf-8') as file:
-        while True:
-            recipe_name = file.readline().strip()
-            if not recipe_name:
-                break
-            ingredient_count = int(file.readline().strip())
-            ingredients = []
-            for _ in range(ingredient_count):
-                ingredient_line = file.readline().strip().split(' | ')
-                ingredient_name = ingredient_line[0]
-                ingredient_quantity = int(ingredient_line[1])
-                ingredient_measure = ingredient_line[2]
-                ingredient = {
-                    'ingredient_name': ingredient_name,
-                    'quantity': ingredient_quantity,
-                    'measure': ingredient_measure
-                }
-                ingredients.append(ingredient)
-            cook_book[recipe_name] = ingredients
-            file.readline()
-    return cook_book
+import os
 
-cook_book = read_recipes('cook_book.txt')
-print(cook_book)
+
+files = ['1.txt', '2.txt', '3.txt']
+
+
+file_contents = []
+for file_name in files:
+    with open(file_name, 'r', encoding='utf-8') as file:
+        content = file.readlines()
+        file_contents.append((file_name, len(content), content))
+
+
+file_contents.sort(key=lambda x: x[1])
+
+
+with open('result.txt', 'w', encoding='utf-8') as result_file:
+    for file_name, line_count, content in file_contents:
+
+        result_file.write(file_name + '\n')
+        result_file.write(str(line_count) + '\n')
+
+
+        result_file.writelines(content)
+        result_file.write('\n')
